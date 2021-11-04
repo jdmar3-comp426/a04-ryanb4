@@ -47,13 +47,18 @@ app.get("/app/user/:id", (req, res) => {
 });
 
 // UPDATE a single user (HTTP method PATCH) at endpoint /app/update/user/:id
-app.patch("/app/update/user:id", (req, res) => {	
+app.patch("/app/update/user/:id", (req, res) => {	
 	const patchUser = db.prepare('UPDATE userinfo SET (user, pass) VALUES (?, ?) WHERE id = ?');
 	const info = patchUser.run(req.body.user, md5(req.body.pass), req.params.id);
 	res.status(405).json(info);
 });
 
 // DELETE a single user (HTTP method DELETE) at endpoint /app/delete/user/:id
+app.delete("/app/delete/user/:id", (req, res) => {	
+	const deleteUser = db.prepare('DELETE FROM userinfo WHERE id = ?');
+	const info = deleteUser.run(req.params.id);
+	res.status(200).json(info);
+});
 
 // Default response for any other request
 app.use(function(req, res){

@@ -2,24 +2,24 @@
 var express = require("express")
 var app = express()
 // Require database SCRIPT file
-var db = require('./database.js')
+var db = require('./database.js');
 
 // Require md5 MODULE
-var md5 = require("md5")
+var md5 = require("md5");
 
 // Make Express use its own built-in body parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Set server port
-var HTTP_PORT = 5000
+var HTTP_PORT = 5000;
 
 // Start server
 app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
 });
 // READ (HTTP method GET) at root endpoint /app/
-app.get("/", (req, res, next) => {
+app.get("/app", (req, res, next) => {
     res.json({"message":"Your API works! (200)"});
 	res.status(200);
 });
@@ -37,8 +37,8 @@ app.get("/app/users", (req, res) => {
 app.get("/app/users", (req, res) => {	
 	const getUser = db.prepare('SELECT * FROM userinfo WHERE = ?');
 	const output = getUser.get(req.params.id);
+	res.status(200).json(output);
 });
-
 
 
 // UPDATE a single user (HTTP method PATCH) at endpoint /app/update/user/:id
